@@ -2,6 +2,7 @@ let p, s;
 let arr = [];
 let vel, sv, f;
 let g, a, gx, gy, sx, sy;
+let st;
 
 
 
@@ -20,22 +21,45 @@ function setup() {
   ap = createVector(p.x, p.y);
   pe = createVector(p.x, p.y);
 
+  st = new Stars(1000);
+
   
   
   
-  celestialContainer.push(new Body(1, -100, 2.6, 0, 10, 5));
-  //celestialContainer.push(new Body(-200, 0, 0, 0, 10000000000000, 50));
-  celestialContainer.push(new Body(100, 0, 0, 0, 10000000000000, 50));
+  //celestialContainer.push(new Body(1, -100, 2.6, 0, 10, 5));
+  celestialContainer.push(new Body(-100, 0, 0, 0, 10000000000000, 10, "yellow"));
+  celestialContainer.push(new Body(100, 0, 0, -1, 10, 5, "orange", true));
   //celestialContainer.push(new Body(0, 0, 0, 0, 0, 0));
   
 
   //console.log(celestialContainer[0].r);
+
+  
   
 }
 
-function draw() {
+function draw(){
+  if(keyIsPressed){
+    ok();
+ }
+}
+
+
+
+function ok() {
+
+
+  
+  
   frameRate(120);
   background(10);
+
+  st.update();
+
+
+  fill("#00FF00");
+  text("FPS: " + round(frameRate()), 50, 50);
+  
 
   
   //console.log(celestialContainer[0].fg);
@@ -70,7 +94,6 @@ function draw() {
 
  
   
-    
   
   translate(width/2, height/2);
 
@@ -113,12 +136,12 @@ function draw() {
 noStroke();
   
   
-  arr.push({x:p.x, y:p.y});
-  for(let i = 1; i < 100; i++){
-      if(arr.length > 100){
-        //circle(arr[arr.length - (100-i)].x, arr[arr.length - (100-i)].y, 1);
-      }
-  }
+  // arr.push({x:p.x, y:p.y});
+  // for(let i = 1; i < 100; i++){
+  //     if(arr.length > 100){
+  //       //circle(arr[arr.length - (100-i)].x, arr[arr.length - (100-i)].y, 1);
+  //     }
+  // }
  
   
   
