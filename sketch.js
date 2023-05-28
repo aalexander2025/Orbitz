@@ -27,7 +27,7 @@ function setup() {
   
   
   //celestialContainer.push(new Body(1, -100, 2.6, 0, 10, 5));
-  celestialContainer.push(new Body(-100, 0, 0, 0, 10000000000000, 10, "yellow"));
+  celestialContainer.push(new Body(-100, 0, 0, 0.1, 10000000000000, 10, "yellow"));
   celestialContainer.push(new Body(100, 0, 0, -1, 10, 5, "orange", true));
   //celestialContainer.push(new Body(0, 0, 0, 0, 0, 0));
   
@@ -39,9 +39,9 @@ function setup() {
 }
 
 function draw(){
-  if(keyIsPressed){
+ // if(keyIsPressed){
     ok();
- }
+ //}
 }
 
 

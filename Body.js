@@ -65,7 +65,7 @@ function Body(x, y, vx, vy, mass, rad, clr, show){
                         this.ap.set(this.p.x, this.p.y);
                     }
                     if(dist(c.x, c.y, this.p.x, this.p.y) < dist(c.x, c.y, this.pe.x, this.pe.y)){
-                        this.pe.set(this.p.x , this.p.y);
+                        this.pe.set(this.p.x, this.p.y);
                     }
 
                 }
@@ -88,6 +88,8 @@ function Body(x, y, vx, vy, mass, rad, clr, show){
         }
 
         if(show){
+
+            //Apsidies work in progress
             fill("cyan");
             text("apoapsis", this.ap.x + 5, this.ap.y - 5);
             circle(this.ap.x, this.ap.y, 5);
