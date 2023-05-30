@@ -24,15 +24,16 @@ function setup() {
   st = new Stars(1000);
 
   
-  
-  
-  //celestialContainer.push(new Body(1, -100, 2.6, 0, 10, 5));
-  celestialContainer.push(new Body(-100, 0, 0, 0.1, 10000000000000, 10, "yellow"));
-  celestialContainer.push(new Body(100, 0, 0, -1, 10, 5, "orange", true));
-  //celestialContainer.push(new Body(0, 0, 0, 0, 0, 0));
-  
 
-  //console.log(celestialContainer[0].r);
+  
+  
+  
+  //new Body(x pos, y pos, init vel x, init vel y, mass, radius, atmosphere rad, color, show apsidies(opt));
+  
+  celestialContainer.push(new Body(-100, 0, 0, 0, 10000000000000, 50, 0, "yellow"));
+  celestialContainer.push(new Body(100,  0, 0,-2, 1, 5, 0, "orange", true));
+  
+  //             atmosphere radius set to 0 by default               //
 
   
   
@@ -53,6 +54,7 @@ function ok() {
   
   frameRate(120);
   background(10);
+  // background(10);
 
   st.update();
 

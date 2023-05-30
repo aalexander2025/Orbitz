@@ -3,7 +3,7 @@ const G = 6.77*(10**-11);
 
 
 //body object
-function Body(x, y, vx, vy, mass, rad, clr, show){
+function Body(x, y, vx, vy, mass, rad, at, clr, show){
     this.v = createVector();
     this.p = createVector();
     this.fg;
@@ -24,8 +24,13 @@ function Body(x, y, vx, vy, mass, rad, clr, show){
     this.mass = mass;
     this.r = rad;
     this.d = 0;
+    this.atmos = at;
+    this.kill = false;
 
     this.update = function (){
+
+
+        if(!this.kill){
 
         // if(keyIsPressed && key == 'w'){
         //     this.ap = this.p;
@@ -42,6 +47,7 @@ function Body(x, y, vx, vy, mass, rad, clr, show){
             for(let i = 0; i < celestialContainer.length; i++){
 
                 let c = celestialContainer[i].p;
+                let cv = celestialContainer[i].v;
                 let cm = celestialContainer[i].mass;
                 let cr = celestialContainer[i].r;
 
@@ -68,21 +74,37 @@ function Body(x, y, vx, vy, mass, rad, clr, show){
                         this.pe.set(this.p.x, this.p.y);
                     }
 
+                    if(dist(c.x, c.y, this.p.x, this.p.y) < (this.r + this.atmos/2)){
+                        cv.mult(0.999);
+                    }
+
+                    if(dist(c.x, c.y, this.p.x, this.p.y) < (cr) && this.r < cr){
+                        cv.set(this.v.x/cm, this.v.y/cm);
+                        console.log(this.r);
+                        this.kill = true;
+                    }
+
                 }
 
-        }
-      }  
+             }
+            } 
+        } 
     }
 
     this.display = function (){
+
+        if(!this.kill){
+        fill(255, 100);
+        circle(this.p.x, this.p.y, (this.r * 2) + this.atmos);
         fill(this.color);
         circle(this.p.x, this.p.y, this.r * 2);
+        
         //console.log(this.p.x, this.p.y, this.r);
 
         arr.push({x:this.p.x, y:this.p.y});
             for(let i = 1; i < 100; i++){
                 if(arr.length > 100){
-                    fill("white");
+                    fill("green");
                 circle(arr[arr.length - (100-i)].x, arr[arr.length - (100-i)].y, 1);
             }
         }
@@ -96,6 +118,7 @@ function Body(x, y, vx, vy, mass, rad, clr, show){
             text("periapsis", this.pe.x + 5, this.pe.y - 5);
             circle(this.pe.x, this.pe.y, 5);
         }
+    }
         
     }
 }
