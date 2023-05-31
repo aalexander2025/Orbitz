@@ -29,9 +29,17 @@ function setup() {
   
   
   //new Body(x pos, y pos, init vel x, init vel y, mass, radius, atmosphere rad, color, show apsidies(opt));
+
+  celestialContainer.push(new Body(0, 0, 0, 0,1500000000000, 50, 0, "yellow"));
+  celestialContainer.push(new Body(100, 0, 0, -0.7, 1, 5, 0, "blue"));
   
-  celestialContainer.push(new Body(-100, 0, 0, 0, 10000000000000, 50, 0, "yellow"));
-  celestialContainer.push(new Body(100,  0, 0,-2, 1, 5, 0, "orange", true));
+  celestialContainer.push(new Body(200, 0, 0, -0.4,1 , 5, 0, "blue"));
+  
+  
+  // celestialContainer.push(new Body(200,-200, 0, -0.05,100000000000, 5, 0, "yellow"));
+  // celestialContainer.push(new Body(100,  -300, 0.25,0, 1, 5, 0, "orange", true));
+
+  // celestialContainer.push(new Body(-200,200, 0,0, 1000000000000, 5, 0, "orange"));
   
   //             atmosphere radius set to 0 by default               //
 
@@ -50,11 +58,8 @@ function draw(){
 function ok() {
 
 
-  
-  
   frameRate(120);
   background(10);
-  // background(10);
 
   st.update();
 
@@ -64,90 +69,14 @@ function ok() {
   
 
   
-  //console.log(celestialContainer[0].fg);
-  
-  if(keyIsPressed && key=='d'){
-    f += 0.001;
-    ap.set(p);
-    pe.set(p);
-  }
-  if(keyIsPressed && key=='a'){
-    f -= 0.001;
-    ap.set(p);
-    pe.set(p);
-  }
-  
-  
-  vel.add(gx * f, gy * f);
-  p.add(vel.x, vel.y);
-  
-  
-  
-  sv.add(sx, sy);
-  s.add(sv);
-
-  if(dist(s.x, s.y, p.x, p.y) > dist(s.x, s.y, ap.x, ap.y)){
-    ap.set(p.x, p.y);
-  }
-  if(dist(s.x, s.y, p.x, p.y) < dist(s.x, s.y, pe.x, pe.y)){
-    pe.set(p.x, p.y);
-  }
-
-
- 
-  
-  
   translate(width/2, height/2);
 
-  celestialContainer[0].update();
-  celestialContainer[0].display();
 
-  celestialContainer[1].update();
-  celestialContainer[1].display();
+  for(let i = 0; i < celestialContainer.length; i++){
+    celestialContainer[i].update();
+    celestialContainer[i].display();
+  }
 
-  // celestialContainer[2].update();
-  // celestialContainer[2].display();
-
-  
-
-  // fill("cyan");
-  // text("apoapsis", ap.x, ap.y);
-  // circle(ap.x, ap.y, 5);
-  // text("periapsis", pe.x, pe.y);
-  // circle(pe.x, pe.y, 5);
-  
-   let r = dist(s.x, s.y, p.x, p.y);
-    gm = (6.77*(10**-11))*(10000000000000/(r**2));
-    gs = (6.77*(10**-11))*(10/(r**2));
-    a = atan2(s.y - p.y, s.x - p.x);
-    gx = gm * cos(a);
-    gy = gm * sin(a);
-  
-  
-    sx = gs * cos(a);
-    sy = gs * sin(a);
-    
-  
-  // fill("yellow");
-  // circle(s.x, s.y, 100);
-  
-  // fill("white");
-  // circle(p.x, p.y, 10);
-  
-  
 noStroke();
-  
-  
-  // arr.push({x:p.x, y:p.y});
-  // for(let i = 1; i < 100; i++){
-  //     if(arr.length > 100){
-  //       //circle(arr[arr.length - (100-i)].x, arr[arr.length - (100-i)].y, 1);
-  //     }
-  // }
- 
-  
-  
-  
-
 }
  

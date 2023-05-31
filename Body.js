@@ -4,6 +4,7 @@ const G = 6.77*(10**-11);
 
 //body object
 function Body(x, y, vx, vy, mass, rad, at, clr, show){
+    
     this.v = createVector();
     this.p = createVector();
     this.fg;
@@ -18,7 +19,6 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show){
     this.pe = createVector();
     this.showEx = show;
 
-    
     this.v.set(vx, vy);
     this.p.set(x, y);
     this.mass = mass;
@@ -29,6 +29,11 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show){
 
     this.update = function (){
 
+        if(this.kill){
+            this.v.set(0, 0);
+            this.p.set(-10000, -100000);
+        }
+
 
         if(!this.kill){
 
@@ -37,8 +42,7 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show){
         //     this.pe = this.p;
         // }
 
-        this.v.add(this.avx, this.avy);
-        this.p.add(this.v);
+        
 
      
 
@@ -53,6 +57,9 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show){
 
 
                 if(this.p.x != c.x || this.p.y != c.y){
+
+                    this.v.add(this.avx, this.avy);
+                    this.p.add(this.v);
                 
                     let rd = dist(this.p.x, this.p.y, c.x, c.y);
                     //console.log(rd);
@@ -75,10 +82,10 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show){
                     }
 
                     if(dist(c.x, c.y, this.p.x, this.p.y) < (this.r + this.atmos/2)){
-                        cv.mult(0.999);
+                        cv.mult(0.9);
                     }
 
-                    if(dist(c.x, c.y, this.p.x, this.p.y) < (cr) && this.r < cr){
+                    if(dist(c.x, c.y, this.p.x, this.p.y) < (cr) && this.r <= cr){
                         cv.set(this.v.x/cm, this.v.y/cm);
                         console.log(this.r);
                         this.kill = true;
