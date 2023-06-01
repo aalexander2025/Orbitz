@@ -3,6 +3,7 @@ const G = 6.77 * 10 ** -11;
 
 //body object
 function Body(x, y, vx, vy, mass, rad, at, clr, show) {
+  this.id = celestialContainer.length;
   //possition and velocity vectors
   this.v = createVector();
   this.p = createVector();
@@ -35,6 +36,7 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
   this.atmos = at;
   this.kill = false;
   this.static = true;
+  this.isTarget = false;
 
   //update the body
   this.update = function () {
@@ -97,6 +99,35 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
 
   //displays the bodies
   this.display = function () {
+    //target body and track its position
+    if (
+      dist(mouseX - width / 2, mouseY - height / 2, this.p.x, this.p.y) <=
+        max(100, this.r * 2) &&
+      !this.isTarget &&
+      clearTarget
+    ) {
+      overlap.push(this.id);
+      if (overlap[0] == this.id) {
+        fill(0, 0);
+        stroke("red");
+        circle(this.p.x, this.p.y, max(100, this.r * 4));
+        noStroke();
+        if (mouseIsPressed) {
+          this.isTarget = true;
+          clearTarget = false;
+        }
+      }
+    } else {
+      overlap.splice(0, Infinity);
+    }
+
+    if (this.isTarget && !clearTarget) {
+      w = -this.p.x;
+      h = -this.p.y;
+    }
+    if (clearTarget) {
+      this.isTarget = false;
+    }
     if (!this.kill) {
       //the atmosphere
       fill(255, 100);

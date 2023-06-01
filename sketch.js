@@ -2,6 +2,8 @@ let st;
 let scl = 1;
 let w = (h = 0);
 let spd = 5;
+let clearTarget = true;
+let overlap = [];
 
 let celestialContainer = [];
 
@@ -43,7 +45,7 @@ function draw() {
   fill("#FFFF00");
   text("Zoom:in/out: - / + ", 50, 75);
   text("Reset Zoom: Backspace ", 50, 90);
-  text("Move Cursor: wasd (" + w + "," + h + ")", 50, 105);
+  text("Move Cursor: wasd (" + round(w, 2) + "," + round(h, 2) + ")", 50, 105);
   text("Reset Cursor: R ", 50, 120);
   text("Reset All: Shift + R ", 50, 135);
 
@@ -52,7 +54,6 @@ function draw() {
   line(width / 2, height / 2 - 10, width / 2, height / 2 + 10);
   line(width / 2 - 10, height / 2, width / 2 + 10, height / 2);
   noStroke();
-
 
   //cursor movement
   if (keyIsDown(83)) {
@@ -78,6 +79,7 @@ function draw() {
     w = 0;
     h = 0;
     scl = 1;
+    clearTarget = true;
   }
 }
 
