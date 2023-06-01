@@ -104,9 +104,10 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
       dist(
         mouseX - (width / 2 + w),
         mouseY - (height / 2 + h),
-        this.p.x,
-        this.p.y
-      ) <= max(50, this.r * 2) &&
+        this.p.x * scl,
+        this.p.y * scl
+      ) <=
+        max(50, this.r * 2) * scl &&
       !this.isTarget &&
       clearTarget
     ) {
