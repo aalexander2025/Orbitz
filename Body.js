@@ -101,8 +101,12 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
   this.display = function () {
     //target body and track its position
     if (
-      dist(mouseX - (width / 2 + w) , mouseY - (height / 2 + h), this.p.x, this.p.y) <=
-        max(50, this.r * 2) &&
+      dist(
+        mouseX - (width / 2 + w),
+        mouseY - (height / 2 + h),
+        this.p.x,
+        this.p.y
+      ) <= max(50, this.r * 2) &&
       !this.isTarget &&
       clearTarget
     ) {
