@@ -4,6 +4,8 @@ let w = (h = 0);
 let spd = 5;
 let clearTarget = true;
 let overlap = [];
+let isPaused = false;
+let toggle = false;
 
 let celestialContainer = [];
 
@@ -48,6 +50,7 @@ function draw() {
   text("Move Cursor: wasd (" + round(w, 2) + "," + round(h, 2) + ")", 50, 105);
   text("Reset Cursor: R ", 50, 120);
   text("Reset All: Shift + R ", 50, 135);
+  text("Pause: P (" + isPaused + ")", 50, 150);
 
   //cursor
   stroke("white");
@@ -91,6 +94,20 @@ function keyPressed() {
   if (key == "-") {
     scl -= 0.05;
   }
+
+  if (key == "p" && !toggle) {
+    isPaused = true;
+  }
+  if (key == "p" && toggle) {
+    isPaused = false;
+    toggle = false;
+  }
+}
+
+function keyReleased() {
+  if (isPaused) {
+    toggle = true;
+  }
 }
 
 //the sim function
@@ -107,7 +124,10 @@ function simulator() {
 
   //drawing, updating, and removing bodies in this for loop
   for (let i = 0; i < celestialContainer.length; i++) {
-    celestialContainer[i].update();
+    if (!isPaused) {
+      celestialContainer[i].update();
+    }
+
     celestialContainer[i].display();
     if (celestialContainer[i].kill == true) {
       celestialContainer.splice(i, 1);

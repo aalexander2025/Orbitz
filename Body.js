@@ -102,15 +102,16 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
     //target body and track its position
     if (
       dist(mouseX - width / 2, mouseY - height / 2, this.p.x, this.p.y) <=
-        max(100, this.r * 2) &&
+        max(50, this.r * 2) &&
       !this.isTarget &&
       clearTarget
     ) {
       overlap.push(this.id);
       if (overlap[0] == this.id) {
         fill(0, 0);
-        stroke("red");
-        circle(this.p.x, this.p.y, max(100, this.r * 4));
+        stroke(this.color);
+        circle(this.p.x, this.p.y, max(50, this.r * 2) * 2);
+
         noStroke();
         if (mouseIsPressed) {
           this.isTarget = true;
