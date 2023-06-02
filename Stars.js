@@ -14,7 +14,7 @@ function Stars(count) {
   this.update = function () {
     for (let i = 0; i < this.c; i++) {
       fill(this.pos[i].clr);
-      circle(this.pos[i].x, this.pos[i].y, 1);
+      circle(this.pos[i].x, this.pos[i].y, 2);
     }
   };
 }

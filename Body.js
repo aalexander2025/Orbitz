@@ -2,7 +2,7 @@
 const G = 6.77 * 10 ** -11;
 
 //body object
-function Body(x, y, vx, vy, mass, rad, at, clr, show) {
+function Body(x, y, vx, vy, mass, rad, at, clr, show, name) {
   this.id = celestialContainer.length;
   //possition and velocity vectors
   this.v = createVector();
@@ -11,6 +11,8 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
   this.fg;
   this.avx;
   this.avy;
+  this.os;
+  this.ok;
   //mass, radius, and distances
   this.mass;
   this.r;
@@ -19,6 +21,7 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
   this.arr = [];
   //color of the body
   this.color = clr;
+  this.name = name;
   //apsidies
   this.ap = createVector();
   this.pe = createVector();
@@ -43,6 +46,7 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
     //run the update function only if it has not been destroyed
     if (!this.kill) {
       if (celestialContainer.length > 0) {
+        this.p.add(this.v);
         //if not equal itself
         for (let i = 0; i < celestialContainer.length; i++) {
           let c = celestialContainer[i].p;
@@ -52,19 +56,32 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
 
           //if it is not equal to itself...
           if (this.p.x != c.x || this.p.y != c.y) {
-            if (this.static == true) {
-              //adds forces to the velocity
-              this.v.add(this.avx, this.avy);
-              this.p.add(this.v);
-            }
+            //if (this.static == true) {
+            //adds forces to the velocity
+            this.v.add(this.avx, this.avy);
+
+            //}
 
             //distance between bodies
             let rd = dist(this.p.x, this.p.y, c.x, c.y);
             //the Epic equations
-            this.fg = G * (cm / rd ** 2);
+            this.fg = (G * (cm / rd ** 2)) / 10000;
+            //this.os = (2*PI*rd)/(4*(PI**2)/(G * cm)) * rd;
+            this.ok = sqrt((G * cm) / rd);
 
             //angle between bodies
             let a = atan2(c.y - this.p.y, c.x - this.p.x);
+            let bc = rd * (this.mass / (this.mass + cm));
+
+            push();
+
+            translate((this.p.x - c.x) / 2, this.p.y / 2);
+            rotate(a);
+            fill(0, 0);
+            stroke(255);
+            // ellipse(0, 0, rd, rd);
+            pop();
+
             this.avx = this.fg * cos(a);
             this.avy = this.fg * sin(a);
 
@@ -97,13 +114,55 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
     }
   };
 
+  this.info = function () {
+    fill(0, 0);
+    stroke(this.color);
+
+    circle(
+      this.p.x,
+      this.p.y,
+      max(max(50, this.r * 2) * 2, (max(50, this.r * 2) * 2) / (scl * 2))
+    );
+    fill("white");
+    noStroke();
+
+    textSize(max(12, 12 / scl));
+
+    let t = "orbit UwU";
+    if (this.os > 0.1) {
+      t = "orbit OwO";
+    }
+    text(
+      '"' +
+        this.name +
+        '"' +
+        "\n" +
+        "(" +
+        round(this.v.x, 2) +
+        "," +
+        round(this.v.y, 2) +
+        ")" +
+        "\n" +
+        round(this.fg, 5) +
+        "\n" +
+        t,
+      this.p.x + max(50, this.r * 2) / 2,
+      this.p.y + max(50, this.r * 2) / 2
+    );
+  };
+
   //displays the bodies
   this.display = function () {
     //target body and track its position
+
+    if (this.isTarget) {
+      this.info();
+    }
+
     if (
       dist(
-        mouseX - (width / 2 + w),
-        mouseY - (height / 2 + h),
+        mouseX - (width / 2 + w * scl),
+        mouseY - (height / 2 + h * scl),
         this.p.x * scl,
         this.p.y * scl
       ) <=
@@ -112,14 +171,12 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
       clearTarget
     ) {
       overlap.push(this.id);
-      if (overlap[0] == this.id) {
-        fill(0, 0);
-        stroke(this.color);
-        circle(this.p.x, this.p.y, max(50, this.r * 2) * 2);
+      if (overlap[0] == this.id || this.isTarget == true) {
+        this.info();
 
-        noStroke();
         if (mouseIsPressed) {
           this.isTarget = true;
+          this.info();
           clearTarget = false;
         }
       }
@@ -145,23 +202,29 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show) {
       //console.log(this.p.x, this.p.y, this.r);
 
       //number of vertices for the trail
-      this.vert = 200;
+      this.vert = 1000;
+      this.am = 4;
 
       if (this.r > 2) {
         this.arr.push({ x: this.p.x, y: this.p.y });
         for (let i = 0; i <= this.vert; i++) {
           if (this.arr.length > this.vert) {
-            if (i % 10 == 0 && i != 0) {
+            if (i % this.am == 0 && i != 0) {
               this.x1 = this.arr[this.arr.length - (this.vert - (i - 1))].x;
               this.y1 = this.arr[this.arr.length - (this.vert - (i - 1))].y;
             }
 
-            if (i % 10 == 5) {
+            if (i % this.am == this.am / 2) {
               this.x2 = this.arr[this.arr.length - (this.vert - i)].x;
               this.y2 = this.arr[this.arr.length - (this.vert - i)].y;
             }
-            colorMode(HSB, 255, 255, 255);
-            stroke(255 * (i / this.vert) + 9, 0, 255 * (i / this.vert) + 9);
+            colorMode(HSB, 255, 255, 255, 255);
+            stroke(
+              255 * (i / this.vert) + 7,
+              0,
+              255,
+              255 * (i / this.vert) + 7
+            );
             colorMode(RGB, 255, 255, 255, 255);
             if (i > 9) {
               //the trail

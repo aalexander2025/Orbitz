@@ -19,33 +19,41 @@ function setup() {
   //these are the default bodies in the sketch, feel free to change them
 
   celestialContainer.push(
-    new Body(0, 0, 0, 0, 55000000000000, 50, 0, "#ffff00", false)
+    new Body(0, 0, 0, 0, 10000000000000000, 50, 0, "#ffff00", false, "Sun")
   );
 
   celestialContainer.push(
-    new Body(300, 0, 0, -2.2, 300000000000, 10, 15, "#0000ff", false)
+    new Body(300, 0, 0, -0.1, 1000000000000, 10, 0, "#0000ff", false, "Blu")
   );
 
   celestialContainer.push(
-    new Body(270, 0, 0, -2.9, 1, 2.1, 0, "#00ff00", false)
+    new Body(280, 0, 0, -2, 1, 2, 0, "#00ff00", false, "Mun")
   );
 
-  celestialContainer.push(new Body(0, 0, 0, 0, 0, 0, 0, "#888888", false));
+
+  //celestialContainer.push(new Body(0, 0, 0, 0, 0, 0, 0, "#888888", false));
 
   frameRate(60);
 
   //             atmosphere radius set to 0 by default               //
 }
-
+let a = 0;
 function draw() {
+  spd = 5 / scl;
+
   //running the simulation
+  background(10);
+
+  push();
+  //drawing stars
+  st.update();
   simulator();
 
   //context menu
   fill("#00FF00");
   text("FPS: " + round(frameRate()), 50, 50);
   fill("#FFFF00");
-  text("Zoom:in/out: - / + ", 50, 75);
+  text("Zoom:in/out: - / + " + round(scl, 2) + "x", 50, 75);
   text("Reset Zoom: Backspace ", 50, 90);
   text("Move Cursor: wasd (" + round(w, 2) + "," + round(h, 2) + ")", 50, 105);
   text("Reset Cursor: R ", 50, 120);
@@ -54,8 +62,16 @@ function draw() {
 
   //cursor
   stroke("white");
-  line(width / 2, height / 2 - 10, width / 2, height / 2 + 10);
-  line(width / 2 - 10, height / 2, width / 2 + 10, height / 2);
+  fill("black");
+  rectMode(CENTER);
+  rect(width / 2, height / 2, 2.5, 20);
+  rect(width / 2, height / 2, 20, 2.5);
+  stroke("black");
+  rect(width / 2, height / 2, 2.5, 2.5);
+  // line(width / 2, height / 2 - 10, width / 2, height / 2 + 10);
+  // line(width / 2 - 10, height / 2, width / 2 + 10, height / 2);
+  rectMode(CORNER);
+  pop();
   noStroke();
 
   //cursor movement
@@ -91,7 +107,7 @@ function keyPressed() {
   if (key == "=") {
     scl += 0.05;
   }
-  if (key == "-") {
+  if (key == "-" && scl > 0.25) {
     scl -= 0.05;
   }
 
@@ -112,15 +128,15 @@ function keyReleased() {
 
 //the sim function
 function simulator() {
-  background(10);
-
-  //drawing stars
-  st.update();
-
   //translate to the middle of the screen
   push();
-  translate(width / 2 + w, height / 2 + h);
+  translate(width / 2 + w * scl, height / 2 + h * scl);
   scale(scl, scl);
+
+  //console.log(celestialContainer[1].fg);
+
+  // rotateY(a);
+  // a+= 0.01;
 
   //drawing, updating, and removing bodies in this for loop
   for (let i = 0; i < celestialContainer.length; i++) {
@@ -133,6 +149,7 @@ function simulator() {
       celestialContainer.splice(i, 1);
     }
   }
+  //console.log(celestialContainer[2].fg, celestialContainer[2].ok);
   noStroke();
   pop();
   //end of the transformation
