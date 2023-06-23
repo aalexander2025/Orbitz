@@ -67,8 +67,6 @@ function setup() {
     new Body(200, 0, 0, -3.8, 100000, 5, 0, "#9F400f", false, "Brun")
   );
 
-  
-
   // celestialContainer.push(
   //   new Body(280, 0, 0, -2, 1, 2, 0, "#00ff00", false, "Mun")
   // );
@@ -217,5 +215,6 @@ function simulator() {
   pop();
   //end of the transformation
 }
+
 
 //rahul did stuff

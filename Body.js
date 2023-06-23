@@ -203,6 +203,9 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show, name) {
         drawGradient(this.p.x, this.p.y, this.r * 10);
       }
 
+      //this.path(inc);
+      this.path();
+
       circle(this.p.x, this.p.y, this.r * 2 + this.atmos);
       //the actual body
       fill(this.color);
@@ -214,56 +217,6 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show, name) {
 
       pop();
 
-      //console.log(this.p.x, this.p.y, this.r);
-
-      //number of vertices for the trail
-      // if((360/inc)%2==0){
-      //   this.vert = 360/(inc)+1;
-      // }
-      // else{
-      //   this.vert = 360/inc;
-      // }
-
-      this.vert = 360;
-
-      console.log(inc);
-
-      // if(this.vert < 1){
-      //   this.vert = 1;
-      // }
-      this.am = 4;
-
-      if (this.r > 2) {
-        this.arr.push({ x: this.p.x, y: this.p.y });
-        for (let i = 0; i <= this.vert; i++) {
-          if (this.arr.length > this.vert) {
-            if (i % this.am == 0) {
-              this.x1 = this.arr[this.arr.length - (this.vert - (i - 1))].x;
-              this.y1 = this.arr[this.arr.length - (this.vert - (i - 1))].y;
-            }
-
-            if (i % this.am == this.am / 2) {
-              this.x2 = this.arr[this.arr.length - (this.vert - i)].x;
-              this.y2 = this.arr[this.arr.length - (this.vert - i)].y;
-            }
-            colorMode(HSB, 255, 255, 255, 255);
-            stroke(
-              255 * (i / this.vert) + 7,
-              0,
-              255,
-              255 * (i / this.vert) + 7
-            );
-            colorMode(RGB, 255, 255, 255, 255);
-            if (i > 9) {
-              //the trail
-              line(this.x1, this.y1, this.x2, this.y2);
-            }
-          }
-        }
-
-        noStroke();
-      }
-
       //if show is true, show the apsidies
       if (show) {
         //Apsidies work in progress
@@ -273,6 +226,42 @@ function Body(x, y, vx, vy, mass, rad, at, clr, show, name) {
         text("periapsis", this.pe.x + 5, this.pe.y - 5);
         circle(this.pe.x, this.pe.y, 5);
       }
+    }
+  };
+
+  this.path = function () {
+    this.vert = 360;
+
+    console.log(inc);
+
+    // if(this.vert < 1){
+    //   this.vert = 1;
+    // }
+    this.am = 4;
+
+    if (this.r > 2) {
+      this.arr.push({ x: this.p.x, y: this.p.y });
+      for (let i = 0; i <= this.vert; i++) {
+        if (this.arr.length > this.vert) {
+          if (i % this.am == 0) {
+            this.x1 = this.arr[this.arr.length - (this.vert - (i - 1))].x;
+            this.y1 = this.arr[this.arr.length - (this.vert - (i - 1))].y;
+          }
+
+          if (i % this.am == this.am / 2) {
+            this.x2 = this.arr[this.arr.length - (this.vert - i)].x;
+            this.y2 = this.arr[this.arr.length - (this.vert - i)].y;
+          }
+          colorMode(HSB, 255, 255, 255, 255);
+          stroke(255 * (i / this.vert) + 7, 0, 255, 255 * (i / this.vert) + 7);
+          colorMode(RGB, 255, 255, 255, 255);
+          if (i > 9) {
+            //the trail
+            line(this.x1, this.y1, this.x2, this.y2);
+          }
+        }
+      }
+      noStroke();
     }
   };
 }
